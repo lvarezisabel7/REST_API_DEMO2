@@ -10,5 +10,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
    
     List<Producto> findProductosByPresentacionesId(Integer presentacionId);
     List<Producto> findByName(String name);
+  
     
 }

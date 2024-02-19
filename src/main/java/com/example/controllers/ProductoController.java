@@ -3,7 +3,6 @@ package com.example.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entities.Producto;
+import com.example.exception.ResourceNotFoundException;
 import com.example.repository.ProductoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -44,20 +44,38 @@ public class ProductoController {
         return new ResponseEntity<>(productos, HttpStatus.OK);
     }
     
-    // @GetMapping("/productos/{id}")
-    // public ResponseEntity<Producto> getProductoById(@PathVariable("id") int id) {
-    //     Producto producto = productoRepository.findById(id)
-            
-    // }
+    @GetMapping("/productos/{id}")
+    public ResponseEntity<Producto> getProductoById(@PathVariable("id") int id) {
+        Producto producto = productoRepository.findById(id)
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Not found Producto with id = " + id));
+        
+        return new ResponseEntity<>(producto, HttpStatus.OK);    
+    }
+
+    @PostMapping("/productos")
+    public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
+
+        @SuppressWarnings("null")
+        Producto _producto = productoRepository.save(
+            Producto.builder()
+                .name(producto.getName())
+                .descripcion(producto.getDescripcion())
+                .stock(producto.getStock())
+                .price(producto.getPrice())
+                .presentaciones(producto.getPresentaciones())
+                .build()
+        );
+        return new ResponseEntity<>(_producto, HttpStatus.CREATED);   
+    } 
+
+    
+        
+
+    
 
 
-//  @GetMapping("/tutorials/{id}")
-//   public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") long id) {
-//     Tutorial tutorial = tutorialRepository.findById(id)
-//         .orElseThrow(() -> new ResourceNotFoundException("Not found Tutorial with id = " + id));
-
-//     return new ResponseEntity<>(tutorial, HttpStatus.OK);
-//   }
+    }
 
 //   @PostMapping("/tutorials")
 //   public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
@@ -65,4 +83,4 @@ public class ProductoController {
 //     return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
 //   }
 
-}
+
