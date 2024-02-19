@@ -76,16 +76,13 @@ public class ProductoController {
         Producto _producto = productoRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Not found Tutorial with id = " + id));
 
-        @SuppressWarnings("null")
-        Producto _producto2 = productoRepository.save(
-            Producto.builder()
-                .name(producto.getName())
-                .descripcion(producto.getDescripcion())
-                .stock(producto.getStock())
-                .price(producto.getPrice())
-                .presentaciones(producto.getPresentaciones())
-                .build()
-        );
+        _producto.setName(producto.getName());
+        _producto.setDescripcion(producto.getDescripcion());
+        _producto.setStock(producto.getStock());
+        _producto.setPrice(producto.getPrice());
+        _producto.setPresentaciones(producto.getPresentaciones());
+
+
         return new ResponseEntity<>(productoRepository.save(_producto), HttpStatus.OK);
     }
 
@@ -96,20 +93,24 @@ public class ProductoController {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //@DeleteMapping("/tutorials")
+    public ResponseEntity<HttpStatus> deleteAllProductos() {
+        productoRepository.deleteAll();
 
-
-    
-        
-
-    
-
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     }
 
-//   @PostMapping("/tutorials")
-//   public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
-//     Tutorial _tutorial = tutorialRepository.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), true));
-//     return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
+  
+//     @GetMapping("/tutorials/published")
+//     public ResponseEntity<List<Tutorial>> findByPublished() {
+//       List<Tutorial> tutorials = tutorialRepository.findByPublished(true);
+  
+//       if (tutorials.isEmpty()) {
+//         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//       }
+      
+//       return new ResponseEntity<>(tutorials, HttpStatus.OK);
+//     }
 //   }
-
-
