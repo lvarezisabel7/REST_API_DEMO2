@@ -22,7 +22,7 @@ import com.example.repository.ProductoRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin(origins = "http://localhost:8081")
+// @CrossOrigin(origins = "http://localhost:8080") -> es que aceptas otro json aunque tu estes trabajando en otro puerto
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -58,8 +58,8 @@ public class ProductoController {
     @PostMapping("/productos")
     public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
 
-        @SuppressWarnings("null")
-        Producto _producto = productoRepository.save(
+
+        Producto nuevoProducto = productoRepository.save(
             Producto.builder()
                 .name(producto.getName())
                 .descripcion(producto.getDescripcion())
@@ -68,10 +68,10 @@ public class ProductoController {
                 .presentaciones(producto.getPresentaciones())
                 .build()
         );
-        return new ResponseEntity<>(_producto, HttpStatus.CREATED);   
+        return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);   
     } 
 
-    @PutMapping("/tutorials/{id}")
+    @PutMapping("/productos/{id}")
     public ResponseEntity<Producto> updateProducto(@PathVariable("id") int id, @RequestBody Producto producto) {
         Producto _producto = productoRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Not found Tutorial with id = " + id));
@@ -86,14 +86,14 @@ public class ProductoController {
         return new ResponseEntity<>(productoRepository.save(_producto), HttpStatus.OK);
     }
 
-    @DeleteMapping("/tutorials/{id}")
+    @DeleteMapping("/productos/{id}")
     public ResponseEntity<HttpStatus> deleteProducto(@PathVariable("id") int id) {
     productoRepository.deleteById(id);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //@DeleteMapping("/tutorials")
+    @DeleteMapping("/productos")
     public ResponseEntity<HttpStatus> deleteAllProductos() {
         productoRepository.deleteAll();
 

@@ -19,10 +19,14 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "productos")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,8 +39,10 @@ public class Producto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @NonNull
     private String name;
+
+    @NonNull
     private String descripcion;
 
     private int stock;
@@ -48,8 +54,23 @@ public class Producto implements Serializable {
         })
     @JoinTable(name = "producto_presentaciones",
         joinColumns = { @JoinColumn(name = "producto_id") },
-        inverseJoinColumns = { @JoinColumn(name = "presentacion_id") })
+        inverseJoinColumns = { @JoinColumn(name = "presentacion_id")
+    })
     private Set<Presentacion> presentaciones = new HashSet<>();
-    
+
+    // Método para agregar una presentación al conjunto de presentaciones
+    public void addPresentacion(Presentacion presentacion) {
+        this.presentaciones.add(presentacion);
+        presentacion.getProductos().add(this);
+    }
+
+    // Método para eliminar la presentacion del producto
+    public void removePresentacion(int presentacionId) {
+        Presentacion presentacion = this.presentaciones.stream().filter(p -> p.getId() == presentacionId).findFirst().orElse(null);
+        if (presentacion != null) {
+          this.presentaciones.remove(presentacion);
+          presentacion.getProductos().remove(this);
+        }
+}
 
 }
