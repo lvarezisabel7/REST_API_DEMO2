@@ -56,7 +56,12 @@ public class Producto implements Serializable {
         joinColumns = { @JoinColumn(name = "producto_id") },
         inverseJoinColumns = { @JoinColumn(name = "presentacion_id")
     })
-    private Set<Presentacion> presentaciones = new HashSet<>();
+
+    // variable de toda la clase: private List<Presentacion> presentaciones; (no local)
+    // Como tenemos las anotaciones de lombok no hay que inicializarlas porque ellas ya se encargan de hacerlo
+    // Entonces no hace falta escribir su inicialización: private Set<Presentacion> presentaciones = new HashSet<>();
+    // si no hay anotacion, no se inicializa y habría que declararla como null
+    private Set<Presentacion> presentaciones;
 
     // Método para agregar una presentación al conjunto de presentaciones
     public void addPresentacion(Presentacion presentacion) {
