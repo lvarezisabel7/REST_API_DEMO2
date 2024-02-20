@@ -32,7 +32,7 @@ public class ProductoController {
 
     @GetMapping("/productos")
     public ResponseEntity<List<Producto>> getAllProductos(@RequestParam(required = false) String name) {
-        List<Producto> productos = new ArrayList<Producto>();
+        List<Producto> productos = new ArrayList<Producto>(); // variable local
 
         if (name == null) 
             productoRepository.findAll().forEach(productos::add);
@@ -59,15 +59,16 @@ public class ProductoController {
     public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
 
 
-        Producto nuevoProducto = productoRepository.save(
-            Producto.builder()
-                .name(producto.getName())
-                .descripcion(producto.getDescripcion())
-                .stock(producto.getStock())
-                .price(producto.getPrice())
-                .presentaciones(producto.getPresentaciones())
-                .build()
-        );
+        Producto nuevoProducto = productoRepository.save(producto);
+        //     Producto.builder()
+        //         .name(producto.getName())
+        //         .descripcion(producto.getDescripcion())
+        //         .stock(producto.getStock())
+        //         .price(producto.getPrice())
+        //         .presentaciones(producto.getPresentaciones())
+        //         .build()
+        // );
+        // No hace falta hacer el builder porque la variable producto ya lleva todas las variables del tipo Producto
         return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);   
     } 
 
