@@ -62,6 +62,7 @@ public class Producto implements Serializable {
     // Entonces no hace falta escribir su inicialización: private Set<Presentacion> presentaciones = new HashSet<>();
     // si no hay anotacion, no se inicializa y habría que declararla como null
     private Set<Presentacion> presentaciones;
+    // set para que no se generen presentaciones repetidas
 
 
     // en virtud de que la relación es bidireccional (manytomany) hacen falta estos metodos explicitamente

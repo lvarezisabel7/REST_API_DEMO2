@@ -49,7 +49,8 @@ public class Presentacion implements Serializable {
         }, 
         mappedBy = "presentaciones")
     @JsonIgnore
-    private Set<Producto> productos = new HashSet<>();
+    private Set<Producto> productos;
+    // set para que no se generen dos productos iguales
     
 
 }
