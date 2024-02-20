@@ -77,8 +77,8 @@ public class Producto implements Serializable {
     public void removePresentacion(int presentacionId) {
         Presentacion presentacion = this.presentaciones.stream().filter(p -> p.getId() == presentacionId).findFirst().orElse(null);
         if (presentacion != null) {
-          this.presentaciones.remove(presentacion);
-          presentacion.getProductos().remove(this);
+          this.presentaciones.remove(presentacion); // eliminas la presentacion
+          presentacion.getProductos().remove(this); // eliminas la presentacion del producto
         }
 }
 
