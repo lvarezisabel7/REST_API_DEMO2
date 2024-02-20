@@ -63,6 +63,10 @@ public class Producto implements Serializable {
     // si no hay anotacion, no se inicializa y habría que declararla como null
     private Set<Presentacion> presentaciones;
 
+
+    // en virtud de que la relación es bidireccional (manytomany) hacen falta estos metodos explicitamente
+    // hay qu espeficar a quien si no quieres cargartelos todos
+    
     // Método para agregar una presentación al conjunto de presentaciones
     public void addPresentacion(Presentacion presentacion) {
         this.presentaciones.add(presentacion);
